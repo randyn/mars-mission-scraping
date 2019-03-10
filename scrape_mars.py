@@ -8,7 +8,7 @@ def scrape():
     mars_news_url = 'https://mars.nasa.gov/news/?page=0&per_page=40&order=publish_date+desc%2Ccreated_at+desc&search=&category=19%2C165%2C184%2C204&blank_scope=Latest'
 
     executable_path = {'executable_path': '/usr/local/bin/chromedriver'}
-    browser = Browser('chrome', **executable_path)
+    browser = Browser('chrome', **executable_path, headless=True)
     browser.visit(mars_news_url)
 
     soup = BeautifulSoup(browser.html, 'html.parser')
@@ -20,6 +20,7 @@ def scrape():
     featured_image_url = 'https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars'
     browser.visit(featured_image_url)
     browser.click_link_by_id("full_image")
+    browser.is_element_present_by_css('.fancybox-image')
     soup = BeautifulSoup(browser.html, 'html.parser')
     featured_image = soup.find('img', class_='fancybox-image')
     parsed_url = urlparse(browser.url)
@@ -57,7 +58,7 @@ def scrape():
         "hemisphere_image_urls": hemisphere_image_urls,
         "mars_facts_table": mars_facts_table,
         "mars_weather": mars_weather,
-        "featured_image_url": featured_image_url
+        "featured_image_url": featured_image_url,
         "news_title": latest_news_title,
         "news_p": latest_teaser
     }
