@@ -1,0 +1,54 @@
+<html>
+<head>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+</head>
+<body>
+  <div class="container">
+    <div class="jumbotron text-center">
+      <h1>Mission to Mars</h1>
+      <p><a class="btn btn-primary btn-lg" href="/scrape" role="button">Scrape New Data</a></p>
+    </div>
+    
+    <div id="news-block">
+      <h3>Latest Mars News</h3>
+      <h5>{{mars_data.news_title}}</h5>
+      <p>{{mars_data.news_p}}</p>
+    </div>
+    <div class="row">
+      <div class="col-lg-8">
+        <h3>Featured Mars Image</h3>
+        <img id="featured-image" src="{{mars_data.featured_image_url}}"/>
+      </div>
+      <div class="col-lg-4">
+        <div class="card" id="weather-block">
+          <div class="card-body">
+            <h5 class="card-title">Current Weather on Mars</h5>
+            <p class="card-text">{{mars_data.mars_weather}}</p>
+          </div>
+        </div>
+        
+        <div id="mars-facts">
+          <h4>Mars facts</h4>
+          {{mars_data.mars_facts_table|safe}}
+        </div>
+      </div>
+    </div>
+    <h3 id="hemisphere-title">Mars Hemispheres</h3>
+    <hr/>
+    <div class="row">
+      {% for hemisphere_data in mars_data.hemisphere_image_urls %}
+      <div class="col-lg-6">
+        <div class="card">
+          <img src="{{hemisphere_data.image_url}}" class="hemisphere-image"/>
+          <div class="card-body">
+            <h5 class="card-title">{{hemisphere_data.title}}</h5>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</body>
+</html>
