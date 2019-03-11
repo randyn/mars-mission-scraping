@@ -29,7 +29,7 @@ def scrape():
     weather_url = 'https://twitter.com/marswxreport?lang=en'
     browser.visit(weather_url)
     soup = BeautifulSoup(browser.html, 'html.parser')
-    mars_weather = soup.find('li', class_='js-stream-item').find('p', class_='tweet-text').text
+    mars_weather = soup.find('li', class_='js-stream-item').find('p', class_='tweet-text').contents[0]
 
     mars_facts_url = "https://space-facts.com/mars/"
     browser.visit(mars_facts_url)
