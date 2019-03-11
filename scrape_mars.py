@@ -16,6 +16,8 @@ def scrape():
     latest_news_item = news_list.find('li')
     latest_news_title = latest_news_item.find('div', class_='content_title').find('a').text
     latest_teaser = latest_news_item.find('div', class_='article_teaser_body').text
+    print(latest_news_title)
+    print(latest_teaser)
 
     featured_image_url = 'https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars'
     browser.visit(featured_image_url)
@@ -25,17 +27,21 @@ def scrape():
     featured_image = soup.find('img', class_='fancybox-image')
     parsed_url = urlparse(browser.url)
     featured_image_url = f"{parsed_url.scheme}://{parsed_url.netloc}/{featured_image.attrs['src']}"
+    print(featured_image_url)
 
     weather_url = 'https://twitter.com/marswxreport?lang=en'
     browser.visit(weather_url)
     soup = BeautifulSoup(browser.html, 'html.parser')
     mars_weather = soup.find('li', class_='js-stream-item').find('p', class_='tweet-text').contents[0]
+    print(mars_weather)
 
     mars_facts_url = "https://space-facts.com/mars/"
     browser.visit(mars_facts_url)
     mars_dfs = pd.read_html(browser.html)
     mars_df = mars_dfs[0]
+    mars_df = mars_df.rename(columns={0: "description", 1: "value"}).set_index("description")
     mars_facts_table = mars_df.to_html()
+    print(mars_facts_table)
 
     mars_hemispheres_url = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
     browser.visit(mars_hemispheres_url)
@@ -53,6 +59,7 @@ def scrape():
             "image_url": image_url
         })
         browser.back()
+    print(hemisphere_image_urls)
         
     return {
         "hemisphere_image_urls": hemisphere_image_urls,
